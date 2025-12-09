@@ -12,6 +12,8 @@ import {
   MapPin,
   CheckCircle2,
   ChevronDown,
+  Menu,
+  X,
 } from "lucide-react";
 
 type TripType = "one-way" | "round-trip" | "local";
@@ -23,6 +25,7 @@ const DISPLAY_PHONE = "8300844121";
 const siteUrl = "https://whitetaxibookin.com"; // change if different
 
 export default function Home() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [tripType, setTripType] = useState<TripType>("one-way");
   const [bookingType, setBookingType] = useState<BookingType>("outstation");
   const [airportDirection, setAirportDirection] = useState<AirportDirection>(
@@ -176,19 +179,18 @@ Please help me with fares and availability for my upcoming trip.
         {/* Header */}
         <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+            {/* Logo + Brand */}
             <div className="flex items-center gap-3">
               <div className="relative h-9 w-auto">
                 <Image
                   src="/logo.svg"
                   alt="White Taxi logo"
-                  width={180} // tweak as you like
+                  width={180}
                   height={50}
                   className="h-10 w-auto"
                   priority
                 />
               </div>
-
-              {/* Brand text always visible */}
               <div className="flex flex-col">
                 <p className="text-sm font-semibold tracking-tight md:text-base">
                   White Taxi
@@ -199,6 +201,7 @@ Please help me with fares and availability for my upcoming trip.
               </div>
             </div>
 
+            {/* Desktop nav */}
             <nav className="hidden items-center gap-8 text-sm font-medium text-slate-700 md:flex">
               <a href="#fares" className="hover:text-slate-900">
                 Tariff
@@ -217,14 +220,81 @@ Please help me with fares and availability for my upcoming trip.
               </a>
             </nav>
 
+            {/* Desktop CTA */}
             <a
               href={`tel:+91${DISPLAY_PHONE}`}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-black md:text-sm"
+              className="hidden cursor-pointer items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-black md:inline-flex md:text-sm"
             >
               <PhoneCall className="h-4 w-4" />
               24×7 Call: +91 {DISPLAY_PHONE}
             </a>
+
+            {/* Mobile hamburger */}
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen((prev) => !prev)}
+              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white p-2 text-slate-700 hover:border-slate-400 md:hidden"
+              aria-label="Toggle navigation"
+            >
+              {mobileNavOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
           </div>
+
+          {/* Mobile menu panel */}
+          {mobileNavOpen && (
+            <div className="border-t border-slate-200 bg-white md:hidden">
+              <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 text-sm font-medium text-slate-800">
+                <a
+                  href="#fares"
+                  className="py-1.5"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  Tariff
+                </a>
+                <a
+                  href="#how-it-works"
+                  className="py-1.5"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  How it works
+                </a>
+                <a
+                  href="#why-white-taxi"
+                  className="py-1.5"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  Why White Taxi
+                </a>
+                <a
+                  href="#fleet"
+                  className="py-1.5"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  Fleet
+                </a>
+                <a
+                  href="#faq"
+                  className="py-1.5"
+                  onClick={() => setMobileNavOpen(false)}
+                >
+                  FAQs
+                </a>
+
+                <a
+                  href={`tel:+91${DISPLAY_PHONE}`}
+                  onClick={() => setMobileNavOpen(false)}
+                  className="mt-2 inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-black"
+                >
+                  <PhoneCall className="h-4 w-4" />
+                  Call +91 {DISPLAY_PHONE}
+                </a>
+              </div>
+            </div>
+          )}
         </header>
 
         <main>
@@ -247,7 +317,7 @@ Please help me with fares and availability for my upcoming trip.
                 </h1>
 
                 <p className="mb-4 max-w-xl text-sm text-slate-700 md:text-base">
-                  White Taxi gives you clean cars, experienced chauffeurs,
+                  White Taxi gives you clean cars, experienced drivers,
                   transparent pricing and instant booking for all your one-way,
                   round trip, local and airport rides.
                 </p>
@@ -607,7 +677,7 @@ Please help me with fares and availability for my upcoming trip.
                     <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2">
                       <span>Premium</span>
                       <span className="font-semibold text-slate-900">
-                        from ₹21/km
+                        from ₹24/km
                       </span>
                     </div>
                   </div>
@@ -642,7 +712,7 @@ Please help me with fares and availability for my upcoming trip.
                     <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2">
                       <span>SUV</span>
                       <span className="font-semibold text-slate-900">
-                        from ₹17/km
+                        from ₹18/km
                       </span>
                     </div>
                     <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2">
@@ -724,65 +794,6 @@ Please help me with fares and availability for my upcoming trip.
             </div>
           </section>
 
-          {/* How it works */}
-          <section
-            id="how-it-works"
-            className="border-b border-slate-200 bg-white py-10 md:py-12"
-          >
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-              <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-                <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
-                    Simple, transparent booking experience.
-                  </h2>
-                  <p className="mt-2 max-w-xl text-sm text-slate-600">
-                    No apps, no confusion. Just tell us where you&apos;re going
-                    and we handle the rest.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid gap-5 md:grid-cols-3">
-                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-                    1
-                  </div>
-                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
-                    Share your route
-                  </h3>
-                  <p className="text-xs text-slate-600">
-                    Enter trip or airport details in the form or send us your
-                    trip details on WhatsApp.
-                  </p>
-                </div>
-                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-                    2
-                  </div>
-                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
-                    Get fixed quote
-                  </h3>
-                  <p className="text-xs text-slate-600">
-                    We share an all-inclusive fare with no hidden charges or
-                    last-minute surprises.
-                  </p>
-                </div>
-                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-                    3
-                  </div>
-                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
-                    Ride with peace
-                  </h3>
-                  <p className="text-xs text-slate-600">
-                    Verified chauffeurs, clean cars and support throughout your
-                    journey.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Why White Taxi – eye-catching feature grid */}
           <section
             id="why-white-taxi"
@@ -849,6 +860,65 @@ Please help me with fares and availability for my upcoming trip.
                   >
                     Talk to our team
                   </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* How it works */}
+          <section
+            id="how-it-works"
+            className="border-b border-slate-200 bg-white py-10 md:py-12"
+          >
+            <div className="mx-auto max-w-6xl px-4 md:px-6">
+              <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+                <div>
+                  <h2 className="text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
+                    Simple, transparent booking experience.
+                  </h2>
+                  <p className="mt-2 max-w-xl text-sm text-slate-600">
+                    No apps, no confusion. Just tell us where you&apos;re going
+                    and we handle the rest.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-3">
+                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                    1
+                  </div>
+                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
+                    Share your route
+                  </h3>
+                  <p className="text-xs text-slate-600">
+                    Enter trip or airport details in the form or send us your
+                    trip details on WhatsApp.
+                  </p>
+                </div>
+                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                    2
+                  </div>
+                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
+                    Get fixed quote
+                  </h3>
+                  <p className="text-xs text-slate-600">
+                    We share an all-inclusive fare with no hidden charges or
+                    last-minute surprises.
+                  </p>
+                </div>
+                <div className="group rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                    3
+                  </div>
+                  <h3 className="mb-1 text-sm font-semibold text-slate-900">
+                    Ride with peace
+                  </h3>
+                  <p className="text-xs text-slate-600">
+                    Verified chauffeurs, clean cars and support throughout your
+                    journey.
+                  </p>
                 </div>
               </div>
             </div>
